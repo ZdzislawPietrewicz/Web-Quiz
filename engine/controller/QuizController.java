@@ -1,8 +1,10 @@
 package engine.controller;
 
 import engine.model.Quiz;
+import engine.model.QuizAnswer;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -18,4 +20,11 @@ public class QuizController {
         return quizList;
     }
 
+    @PostMapping("/api/quiz")
+    public QuizAnswer solveQuiz(@RequestParam int answer) {
+        if(answer==2){
+            return new QuizAnswer(true, "Congratulations, you're right!");
+        } else
+            return new QuizAnswer(false,"Wrong answer! Please, try again.");
+    }
 }
