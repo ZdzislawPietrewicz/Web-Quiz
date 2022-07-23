@@ -1,4 +1,4 @@
-package model;
+package engine.model;
 
 public class Quiz {
     private String title;
@@ -13,7 +13,6 @@ public class Quiz {
         this.text = text;
         this.options = options;
     }
-
 
 
     public String getTitle() {
