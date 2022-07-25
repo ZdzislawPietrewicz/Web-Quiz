@@ -1,5 +1,6 @@
 package engine.controller;
 
+import engine.errors.QuizNotExist;
 import engine.model.Quiz;
 import engine.model.QuizAnswer;
 import engine.model.QuizQuestion;
@@ -29,7 +30,10 @@ public class QuizController {
 
     @GetMapping("/api/quizzes/{id}")
     private QuizQuestion getQuizQuestion(@PathVariable int id) {
-        return quizQuestionList.get(id - 1);
+        if (id <= quizList.size()) {
+            return quizQuestionList.get(id - 1);
+        } else throw new QuizNotExist("Quiz doesn't exist");
+
     }
 
     @GetMapping("/api/quiz")
@@ -37,9 +41,9 @@ public class QuizController {
 
     }
 
-    @PostMapping("/api/quiz")
-    public QuizAnswer solveQuiz(@RequestParam int answer) {
-        if (answer == 2) {
+    @PostMapping("/api/quizzes/{id}/solve")
+    public QuizAnswer solveQuiz(@PathVariable int id, @RequestParam int answer) {
+        if (quizList.get(id - 1).getAnswer() == answer) {
             return new QuizAnswer(true, "Congratulations, you're right!");
         } else
             return new QuizAnswer(false, "Wrong answer! Please, try again.");
