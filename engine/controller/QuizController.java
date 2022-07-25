@@ -1,7 +1,6 @@
 package engine.controller;
 
 import engine.errors.QuizNotExist;
-import engine.model.Quiz;
 import engine.model.QuizAnswer;
 import engine.model.QuizQuestion;
 import org.springframework.web.bind.annotation.*;
@@ -10,40 +9,41 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
+@RequestMapping("/api")
 public class QuizController {
-    private final List<Quiz> quizList = new ArrayList<>();
-    private final List<QuizQuestion> quizQuestionList = new ArrayList<>();
+    private List<QuizQuestion> quizQuestionList = new ArrayList<>();
+    int identifier = 1; // value for the first question
 
-    @PostMapping("/api/quizzes")
-    private QuizQuestion createNewQuizQuestion(@RequestBody Quiz quiz) {
-        QuizQuestion quizQuestion = new QuizQuestion(quizList.size() + 1, quiz.getTitle(),
-                quiz.getText(), quiz.getOptions());
-        quizList.add(quiz);
+    @PostMapping("/quizzes")
+    private QuizQuestion createNewQuizQuestion(@RequestBody QuizQuestion question) {
+        QuizQuestion quizQuestion = new QuizQuestion(identifier, question.getTitle(),
+                question.getText(), question.getOptions(), question.getAnswer());
         quizQuestionList.add(quizQuestion);
+        identifier++;
         return quizQuestion;
     }
 
-    @GetMapping("/api/quizzes")
+    @GetMapping("/quizzes")
     private List<QuizQuestion> getAllQuizzes() {
         return quizQuestionList;
     }
 
-    @GetMapping("/api/quizzes/{id}")
+    @GetMapping("/quizzes/{id}")
     private QuizQuestion getQuizQuestion(@PathVariable int id) {
-        if (id <= quizList.size()) {
+        if (id <= quizQuestionList.size()) {
             return quizQuestionList.get(id - 1);
         } else throw new QuizNotExist("Quiz doesn't exist");
 
     }
 
-    @GetMapping("/api/quiz")
+    @GetMapping("/quiz")
     public void getQuizList() {
 
     }
 
-    @PostMapping("/api/quizzes/{id}/solve")
+    @PostMapping("/quizzes/{id}/solve")
     public QuizAnswer solveQuiz(@PathVariable int id, @RequestParam int answer) {
-        if (quizList.get(id - 1).getAnswer() == answer) {
+        if (quizQuestionList.get(id - 1).getAnswer() == answer) {
             return new QuizAnswer(true, "Congratulations, you're right!");
         } else
             return new QuizAnswer(false, "Wrong answer! Please, try again.");
