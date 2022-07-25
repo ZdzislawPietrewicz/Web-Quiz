@@ -1,11 +1,14 @@
 package engine.controller;
 
 import engine.errors.QuizNotExist;
+import engine.model.Answer;
 import engine.model.QuizAnswer;
 import engine.model.QuizQuestion;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @RestController
@@ -15,7 +18,7 @@ public class QuizController {
     int identifier = 1; // value for the first question
 
     @PostMapping("/quizzes")
-    private QuizQuestion createNewQuizQuestion(@RequestBody QuizQuestion question) {
+    private QuizQuestion createNewQuizQuestion(@Valid @RequestBody QuizQuestion question) {
         QuizQuestion quizQuestion = new QuizQuestion(identifier, question.getTitle(),
                 question.getText(), question.getOptions(), question.getAnswer());
         quizQuestionList.add(quizQuestion);
@@ -42,10 +45,11 @@ public class QuizController {
     }
 
     @PostMapping("/quizzes/{id}/solve")
-    public QuizAnswer solveQuiz(@PathVariable int id, @RequestParam int answer) {
-        if (quizQuestionList.get(id - 1).getAnswer() == answer) {
+    public QuizAnswer solveQuiz(@PathVariable int id, @RequestBody Answer answer) {
+        if (Arrays.asList(answer.getAnswer()).equals(quizQuestionList.get(id).getAnswer())) {
             return new QuizAnswer(true, "Congratulations, you're right!");
-        } else
+        } else {
             return new QuizAnswer(false, "Wrong answer! Please, try again.");
+        }
     }
 }

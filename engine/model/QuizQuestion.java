@@ -2,15 +2,23 @@ package engine.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
+
 public class QuizQuestion{
     private int id;
+
+    @NotBlank
     private String title;
+    @NotBlank
     private String text;
+    @Size(min = 2)
     private String [] options;
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    private int answer;
+    private int [] answer;
 
-    public QuizQuestion(int id, String title, String text, String[] options, int answer) {
+    public QuizQuestion(int id, String title, String text, String[] options, int [] answer) {
         this.id = id;
         this.title = title;
         this.text = text;
@@ -53,11 +61,11 @@ public class QuizQuestion{
         this.options = options;
     }
 
-    public int getAnswer() {
+    public int[] getAnswer() {
         return answer;
     }
 
-    public void setAnswer(int answer) {
+    public void setAnswer(int[] answer) {
         this.answer = answer;
     }
 }
