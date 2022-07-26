@@ -6,7 +6,7 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
-public class QuizQuestion{
+public class QuizQuestion {
     private int id;
 
     @NotBlank
@@ -14,16 +14,16 @@ public class QuizQuestion{
     @NotBlank
     private String text;
     @Size(min = 2)
-    private String [] options;
+    private String[] options;
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    private int [] answer;
+    private int[] answer;
 
-    public QuizQuestion(int id, String title, String text, String[] options, int [] answer) {
+    public QuizQuestion(int id, String title, String text, String[] options, int[] answer) {
         this.id = id;
         this.title = title;
         this.text = text;
         this.options = options;
-        this.answer = answer;
+        this.answer = answer == null ? new int[]{} : answer; // answer can be a empty array
     }
 
     public QuizQuestion() {
