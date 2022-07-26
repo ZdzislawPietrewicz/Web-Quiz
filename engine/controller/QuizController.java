@@ -46,7 +46,8 @@ public class QuizController {
 
     @PostMapping("/quizzes/{id}/solve")
     public QuizAnswer solveQuiz(@PathVariable int id, @RequestBody Answer answer) {
-        if (Arrays.asList(answer.getAnswer()).equals(quizQuestionList.get(id).getAnswer())) {
+        Answer correctAnswer = new Answer(quizQuestionList.get(id-1).getAnswer());
+        if (correctAnswer.equals(answer)) {
             return new QuizAnswer(true, "Congratulations, you're right!");
         } else {
             return new QuizAnswer(false, "Wrong answer! Please, try again.");
