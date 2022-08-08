@@ -9,13 +9,21 @@ import org.springframework.web.context.request.WebRequest;
 @ControllerAdvice
 public class ControllerExceptionHandler {
     @ExceptionHandler(QuizNotExist.class)
-    public ResponseEntity<CustomErrorMessage> handleQuizNotExist(QuizNotExist e, WebRequest webRequest){
+    public ResponseEntity<CustomErrorMessage> handleQuizNotExist(QuizNotExist e, WebRequest webRequest) {
         CustomErrorMessage customErrorMessage = new CustomErrorMessage(e.getMessage());
         return new ResponseEntity<>(customErrorMessage, HttpStatus.NOT_FOUND);
-
     }
 
+    @ExceptionHandler(UserAlreadyExist.class)
+    public ResponseEntity<CustomErrorMessage> handleUserAlreadyExist(UserAlreadyExist e, WebRequest webRequest) {
+        CustomErrorMessage customErrorMessage = new CustomErrorMessage(e.getMessage());
+        return new ResponseEntity<>(customErrorMessage, HttpStatus.BAD_REQUEST);
+    }
 
-
-
+    @ExceptionHandler(EmailNotCorrectOrPasswordToShort.class)
+    public ResponseEntity<CustomErrorMessage> handleEmailAndPasswordInputException(EmailNotCorrectOrPasswordToShort e, WebRequest webRequest) {
+        CustomErrorMessage customErrorMessage = new CustomErrorMessage(e.getMessage());
+        return new ResponseEntity<>(customErrorMessage, HttpStatus.BAD_REQUEST);
+    }
 }
+
