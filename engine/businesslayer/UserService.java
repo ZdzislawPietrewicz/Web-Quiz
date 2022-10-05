@@ -18,10 +18,17 @@ public class UserService {
 
     public User save(User userToSave) {
         return userRepository.save(userToSave);
+
     }
 
     public Optional<User> findUserByEmail(String email) {
         return userRepository.findById(email);
     }
 
+    public Iterable<User> findAllAccounts() {
+        return userRepository.findAll();
+    }
+    public void deleteAllAccounts() {
+    userRepository.deleteAll();
+    }
 }

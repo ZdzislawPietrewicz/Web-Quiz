@@ -25,5 +25,19 @@ public class ControllerExceptionHandler {
         CustomErrorMessage customErrorMessage = new CustomErrorMessage(e.getMessage());
         return new ResponseEntity<>(customErrorMessage, HttpStatus.BAD_REQUEST);
     }
+    @ExceptionHandler(UserNotAuthorisedOrNotExist.class)
+    public ResponseEntity<CustomErrorMessage> handleUserNotAuthorisedOrNotExist(UserNotAuthorisedOrNotExist e, WebRequest webRequest){
+        CustomErrorMessage customErrorMessage=new CustomErrorMessage(e.getMessage());
+        return new ResponseEntity<>(customErrorMessage, HttpStatus.FORBIDDEN);
+    }
+    @ExceptionHandler(QuestionDoesNotExist.class)
+    public ResponseEntity<CustomErrorMessage> handleQuestionNotExist(QuestionDoesNotExist e, WebRequest webRequest){
+        CustomErrorMessage customErrorMessage=new CustomErrorMessage(e.getMessage());
+        return new ResponseEntity<>(customErrorMessage, HttpStatus.NOT_FOUND);
+    }
+    @ExceptionHandler(QuestionDeleted.class)
+    public ResponseEntity handleQuestionDeleted(QuestionDeleted e, WebRequest webRequest){
+        return new ResponseEntity<>( HttpStatus.NO_CONTENT);
+    }
 }
 
